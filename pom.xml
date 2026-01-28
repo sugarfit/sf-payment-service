@@ -11,6 +11,7 @@
 	<groupId>com.sugarfit</groupId>
 	<artifactId>sf-payment-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>sf-payment-service</name>
 	<description>Sugarfit payment service</description>
 	<url/>
@@ -20,6 +21,11 @@
 	<developers>
 		<developer/>
 	</developers>
+	<modules>
+		<module>payment-service-domain</module>
+		<module>payment-service-core</module>
+		<module>payment-service-client</module>
+	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>
@@ -100,13 +106,6 @@
 						</configuration>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.springframework.restdocs</groupId>
-						<artifactId>spring-restdocs-asciidoctor</artifactId>
-						<version>${spring-restdocs.version}</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
