@@ -1,4 +1,4 @@
-package com.sugarfit.baseRepo;
+package com.sugarfit.sps;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
