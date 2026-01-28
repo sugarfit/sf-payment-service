@@ -1,0 +1,14 @@
+<settings>
+     <servers>
+         <server>
+             <id>github</id>
+             <username>curefit</username>
+             <password>${env.GITHUB_MVN_TOKEN}</password>
+         </server>
+         <server>
+             <id>github-sf</id>
+             <username>curefit</username>
+             <password>${env.SUGARFIT_GITHUB_MVN_TOKEN}</password>
+         </server>
+     </servers>
+ </settings>
