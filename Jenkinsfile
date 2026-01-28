@@ -15,7 +15,7 @@ pipeline {
 
   environment {
     ORG = 'sugarfit'
-    APP_NAME = 'base-repo'
+    APP_NAME = 'sf-payment-service'
     GITHUB_MVN_TOKEN = credentials('sugarfit-github-mvn-token')
     BUILD_REGISTRY = "${DOCKER_REGISTRY}/${ORG}/build-artifacts"
   } //environment

@@ -1,0 +1,76 @@
+service:
+  expose:
+    - 8080
+istio:
+  internal:
+    hosts:
+      - sf-payment-service.stage.cure.fit.internal
+  vpn:
+    hosts:
+      - house-md.stage.curefit.co
+  external:
+    hosts:
+      - sf-payment-service.stage.curefit.co
+    match:
+      - exact: /webhook/status-event
+      - exact: /webhook/digital-report-event
+
+datadog:
+  enabled: true
+  custom_metrics: true
+
+deployment:
+  tolerations:
+    # this toleration is to have the app runnable on arm nodes
+    - key: graviton
+      operator: Equal
+      value: 'true'
+      effect: NoSchedule
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/arch
+              operator: In
+              values:
+                - arm64
+  labels:
+    billing: sugarfit
+    sub-billing: sf-payment-service
+  podAnnotations:
+    iam.amazonaws.com/role: arn:aws:iam::035243212545:role/k8s-sf-payment-service-stage
+  probePath: /actuator/health
+  probePort: 8080
+  resources:
+    limits:
+      cpu: 2
+      memory: 5Gi
+    requests:
+      cpu: 1
+      memory: 3G
+  env:
+    - name: LOG_LEVEL
+      value: DEBUG
+    - name: ENVIRONMENT
+      value: "stage"
+    - name: ROLLBAR_DISABLED
+      value: false
+externalSecrets:
+  enabled: "true"
+
+scaling:
+  scaleUpAtCPU: 1.0
+  minReplicas: 1
+  maxReplicas: 2
+  keda:
+    triggers:
+      - type: cpu
+        metadata:
+          value: "1000m"
+        metricType: AverageValue # Allowed types are 'Utilization' or 'AverageValue'
+      - type: cron # scale up from 8:40am-6:20pm
+        metadata:
+          timezone: Asia/Kolkata
+          start: 40 8 * * *
+          end: 20 18 * * *
+          desiredReplicas: "1"
